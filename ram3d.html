@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>
+add
+		</title>
+		
+	</head>
+	<body bgColor='green'>
+		<div id="txt" bgColor="green" >
+			
+		</div>
+		<script>
+	var txts=document.getElementById("txt");
+	txts.innerHTML="";
+	
+	fetch("ram3d.wasm") 
+   .then(bytes => bytes.arrayBuffer()) 
+   .then(mod => WebAssembly.compile(mod)) 
+   .then(module => { 
+      let instance = new WebAssembly.Instance(module);
+   
+xx=8;
+yy=8;
+zz=8;
+	x=0;
+	y=0;
+	z=0;
+	dx=0;
+	dy=0;
+	dz=0;
+	errs=0;
+	xx=(instance.exports.ram3d(0,0,0,0,0));
+	yy=(instance.exports.ram3d(0+1,0,0,0,0));
+	zz=(instance.exports.ram3d(0+2,0,0,0,0));
+	for(dz=0;dz<zz;dz++){
+		for(dy=0;dy<yy;dy++){
+			for(dx=0;dx<xx;dx++){
+				errs=(instance.exports.ram3d(dx+3,dy,dz,1,dx+(dy*xx)+xx*yy*dz));
+			}
+		}
+	}
+	for(dz=0;dz<zz;dz++){
+		for(dy=0;dy<yy;dy++){
+			for(dx=0;dx<xx;dx++){
+				errs=(instance.exports.ram3d(dx+3,dy,dz,0,0));
+				if(errs!=dx+(dy*xx)+xx*yy*dz)txts.innerHTML+="---error<br>";
+				txts.innerHTML+="x "+dx.toString()+" ,y "+dy.toString()+" ,z "+dz.toString()+" = "+errs.toString()+"<br>";
+			}
+		}
+	}
+
+
+});
+
+	</script>
+	</body>
+</html>
