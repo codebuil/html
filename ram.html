@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<title>
+add
+		</title>
+		
+	</head>
+	<body bgColor='green'>
+		<div id="txt" bgColor="green" >
+			
+		</div>
+		<script>
+	var txts=document.getElementById("txt");
+	txts.innerHTML="";
+	
+	fetch("ram.wasm") 
+   .then(bytes => bytes.arrayBuffer()) 
+   .then(mod => WebAssembly.compile(mod)) 
+   .then(module => { 
+      let instance = new WebAssembly.Instance(module);
+      	
+l=512;
+
+i=new Array(l+2);
+d=0;
+v=0;
+sizes=(instance.exports.ram(0,0,0));
+
+	for(d=0;d<sizes;d++)(instance.exports.ram(d+1,1,d));
+	for(d=0;d<sizes;d++){
+		v=(instance.exports.ram(d+1,0,0));
+		if(v!=d)txts.innerHTML+="error--------------<p>";
+		txts.innerHTML+=d.toString()+" = "+v.toString()+"<p>";
+		
+	}
+
+
+   });
+		
+
+
+
+
+
+
+
+	
+
+
+
+	</script>
+	</body>
+</html>
