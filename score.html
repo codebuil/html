@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>
+add
+		</title>
+		
+	</head>
+	<body bgColor='green'>
+		<div id="txt" bgColor="green" >
+			
+		</div>
+		<script>
+	var txts=document.getElementById("txt");
+	txts.innerHTML="";
+	
+	fetch("score.wasm") 
+   .then(bytes => bytes.arrayBuffer()) 
+   .then(mod => WebAssembly.compile(mod)) 
+   .then(module => { 
+      let instance = new WebAssembly.Instance(module);
+  
+//(instance.exports.
+	x=0;
+	xx=16;
+	xxx=0;
+	readss=0;
+	for(x=0;x<xx;x++){
+		xxx=(instance.exports.scores(200));
+		txts.innerHTML+=(instance.exports.scores(readss)).toString()+"<br>";
+	}
+
+
+
+
+
+});
+
+	</script>
+	</body>
+</html>
