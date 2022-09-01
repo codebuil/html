@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title>
+add
+		</title>
+		
+	</head>
+	<body bgColor='green'>
+		<div id="txt" bgColor="green" >
+			
+		</div>
+		<script>
+	var txts=document.getElementById("txt");
+	txts.innerHTML="";
+	
+	fetch("ram2d.wasm") 
+   .then(bytes => bytes.arrayBuffer()) 
+   .then(mod => WebAssembly.compile(mod)) 
+   .then(module => { 
+      let instance = new WebAssembly.Instance(module);
+   
+x=0;
+y=0;
+dx=0;
+dy=0;
+errs=0;
+	x=(instance.exports.ram2d(0,0,0,0));
+	y=(instance.exports.ram2d(0+1,0,0,0));
+		for(dy=0;dy<y;dy++){
+			for(dx=0;dx<x;dx++){
+				errs=(instance.exports.ram2d(dx+2,dy,1,dx+(dy*x)));
+			}
+		}
+ 
+		for(dy=0;dy<y;dy++){
+			for(dx=0;dx<x;dx++){
+				errs=(instance.exports.ram2d(dx+2,dy,0,0));
+				if(errs!=dx+(dy*x))txts.innerHTML+="---error<br>";
+				txts.innerHTML+="x "+dx.toString()+", y "+dy.toString()+"="+errs.toString()+"<br>";
+			}
+		}
+ 
+
+
+
+});
+
+	</script>
+	</body>
+</html>
